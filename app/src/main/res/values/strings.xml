@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">DisplayGU</string>
+    
+    <string name="enter_a_github_user_id">Enter a github user id</string>
+    <string name="search">search</string>
+    
+    <string name="last_updated">Last updated: %s</string>
+    <string name="star_">Star: %d</string>
+    <string name="fork_">Fork: %d</string>
 </resources>
