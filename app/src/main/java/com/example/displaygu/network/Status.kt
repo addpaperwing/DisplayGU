@@ -1,4 +1,4 @@
-package com.example.displaygu.util
+package com.example.displaygu.network
 
 enum class Status {
     LOADING,

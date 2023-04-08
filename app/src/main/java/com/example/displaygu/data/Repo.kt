@@ -1,7 +1,9 @@
 package com.example.displaygu.data
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
 //{
 // "name" : String,
@@ -11,11 +13,12 @@ import com.squareup.moshi.JsonClass
 // "forks" : Integer
 // }
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class Repo(
     val name: String,
     val description: String?,
-    val forks: Int,
     @field:Json(name = "updated_at") val updateAt: String,
-    @field:Json(name = "stargazers_count") val stargazersCount: String,
-) {
+    @field:Json(name = "stargazers_count") val stargazersCount: Int,
+    val forks: Int
+): Parcelable {
 }
