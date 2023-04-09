@@ -37,6 +37,12 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 kapt {
@@ -48,7 +54,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.fragment:fragment-ktx:1.5.6'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    def coroutine_version = '1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -80,15 +88,43 @@ dependencies {
     implementation 'io.coil-kt:coil:2.3.0'
 
 
+    //Unit Test
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    testImplementation 'org.robolectric:robolectric:4.9'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+
+    def test_core_version = "1.5.0"
+    testImplementation "androidx.test:core:$test_core_version"
+    testImplementation "androidx.test:core-ktx:$test_core_version"
+
+    def ext_junit_version = "1.1.5"
+    testImplementation "androidx.test.ext:junit:$ext_junit_version"
+    testImplementation "androidx.test.ext:junit-ktx:$ext_junit_version"
+
+
+    testImplementation 'org.hamcrest:hamcrest-library:2.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    testImplementation 'org.mockito:mockito-core:5.2.0'
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.1.0'
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version"
+
+    // For local unit tests
+    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptTest  "com.google.dagger:hilt-compiler:$hilt_version"
+
+
+    //Instrument test
+    androidTestImplementation "androidx.test:core:$test_core_version"
+    androidTestImplementation "androidx.test:core-ktx:$test_core_version"
+
+    androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$ext_junit_version"
+
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // For instrumentation tests
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest  "com.google.dagger:hilt-compiler:$hilt_version"
-
-    // For local unit tests
-    testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptTest  "com.google.dagger:hilt-compiler:$hilt_version"
 }

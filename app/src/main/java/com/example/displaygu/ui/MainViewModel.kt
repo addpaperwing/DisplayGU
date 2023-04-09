@@ -18,23 +18,24 @@ private const val TAG = "MainViewModel"
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    val taskState = MutableLiveData<TaskState>()
-    val result = MutableLiveData<Pair<User, List<Repo>>>()
+    private val _taskState = MutableLiveData<TaskState>()
+    private val _result = MutableLiveData<Pair<User, List<Repo>>>()
+
+    val result get() = _result
+    val taskState get() = _taskState
 
     fun getData(userName: String) {
         viewModelScope.launch {
-            repository.getUser(userName).zip(repository.getRepos(userName)) { user, repos ->
-                Pair(user, repos)
-            }.onStart {
-                taskState.postValue(TaskState.LOADING)
-            }.catch { cause ->
-                Log.e(TAG, "Error", cause)
-                taskState.postValue(TaskState.error(cause))
-            }.collect {
-                result.value = it
-                taskState.postValue(TaskState.SUCCEED)
-            }
+            repository.getData(userName)
+                .onStart {
+                    _taskState.postValue(TaskState.LOADING)
+                }.catch { cause ->
+                    Log.e(TAG, "Error", cause)
+                    _taskState.postValue(TaskState.error(cause))
+                }.collect {
+                    _result.value = it
+                    _taskState.postValue(TaskState.SUCCEED)
+                }
         }
     }
-
 }

@@ -16,7 +16,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Repo(
     val name: String,
-    val description: String?,
+    val description: String? = null,
     @field:Json(name = "updated_at") val updateAt: String,
     @field:Json(name = "stargazers_count") val stargazersCount: Int,
     val forks: Int

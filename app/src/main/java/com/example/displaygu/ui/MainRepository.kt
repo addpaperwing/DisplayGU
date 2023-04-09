@@ -6,7 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface MainRepository {
-
-    suspend fun getUser(name: String): Flow<User>
-    suspend fun getRepos(name: String): Flow<List<Repo>>
+    suspend fun getData(name: String): Flow<Pair<User, List<Repo>>>
 }
