@@ -1,5 +1,7 @@
 package com.example.displaygu.network
 
+import retrofit2.HttpException
+
 enum class Status {
     LOADING,
     SUCCESS,
@@ -12,6 +14,13 @@ data class TaskState private constructor(
     val exception: Throwable? = null
 ) {
 
+    fun getErrorMessage(): String? {
+        return if (exception is HttpException) {
+            exception.response()?.errorBody()?.string()
+        } else {
+            exception?.message
+        }
+    }
     companion object {
         val SUCCEED = TaskState(Status.SUCCESS)
         val LOADING = TaskState(Status.LOADING)

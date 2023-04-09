@@ -13,11 +13,8 @@ class DefaultMainRepository @Inject constructor(
     private val api: Api,
     private val dispatcher: CoroutineDispatcher
 ): MainRepository {
-    override suspend fun getUser(name: String): Flow<User> = flow {
-        emit(api.getUser(name))
-    }.flowOn(dispatcher)
 
-    override suspend fun getRepos(name: String): Flow<List<Repo>> = flow {
-        emit(api.getRepos(name))
+    override suspend fun getData(name: String): Flow<Pair<User, List<Repo>>> = flow {
+        emit(Pair(api.getUser(name), api.getRepos(name)))
     }.flowOn(dispatcher)
 }

@@ -2,15 +2,11 @@ package com.example.displaygu.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
-import coil.load
-import com.example.displaygu.R
-import com.example.displaygu.data.Repo
 import com.example.displaygu.databinding.ActivityMainBinding
 import com.example.displaygu.network.Status
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val adapter = RepoAdapter {
-            ItemCardFragment.newInstance(it).show(supportFragmentManager, null)
+            ItemCardDialogFragment.newInstance(it).show(supportFragmentManager, null)
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
@@ -44,9 +40,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.taskState.observe(this) {
-            if (it.status == Status.FAILED) {
-                adapter.updateItems(null, emptyList())
-                Toast.makeText(this, it.exception?.message, Toast.LENGTH_SHORT).show()
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.recyclerView.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
+                }
+                Status.LOADING -> {
+                    binding.recyclerView.visibility = View.INVISIBLE
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                Status.FAILED -> {
+                    binding.recyclerView.visibility = View.INVISIBLE
+                    binding.progressBar.visibility = View.INVISIBLE
+                    Toast.makeText(this, it.getErrorMessage(), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

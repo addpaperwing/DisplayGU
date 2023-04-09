@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import com.example.displaygu.R
 import com.example.displaygu.data.Repo
 import com.example.displaygu.databinding.FragmentItemCardBinding
 
 private const val KEY_ARGS_REPO = "com.example.displaygu.key_args_repo"
-class ItemCardFragment : DialogFragment() {
+class ItemCardDialogFragment : DialogFragment() {
 
     companion object {
 
-        fun newInstance(repo: Repo): ItemCardFragment {
+        fun newInstance(repo: Repo): ItemCardDialogFragment {
             val args = Bundle()
             args.putParcelable(KEY_ARGS_REPO, repo)
-            val fragment = ItemCardFragment()
+            val fragment = ItemCardDialogFragment()
             fragment.arguments = args
             return fragment
         }
@@ -49,8 +48,7 @@ class ItemCardFragment : DialogFragment() {
 
         binding.nameTextView.text = repo?.name
         binding.lastUpdatedTextView.text = getString(R.string.last_updated, repo?.updateAt)
-        binding.starTextView.text = getString(R.string.star_, (repo?.stargazersCount?:0))
-        binding.forkTextView.text = getString(R.string.fork_, (repo?.forks?:0))
+        binding.starAndForkTextView.text = getString(R.string.star_fork_, (repo?.stargazersCount?:0), (repo?.forks?:0))
         binding.descTextView.text = repo?.description
     }
 }
