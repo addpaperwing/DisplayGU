@@ -1,22 +1,22 @@
 package com.example.displaygu.ui
 
-import com.example.displaygu.api.FakeApi
+import com.example.displaygu.MainDispatcherRule
 import com.example.displaygu.data.Repo
 import com.example.displaygu.data.User
 import com.example.displaygu.network.Api
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.test.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.contains
-import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
@@ -24,28 +24,24 @@ import retrofit2.Response
 @ExperimentalCoroutinesApi
 internal class DefaultMainRepositoryTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule(UnconfinedTestDispatcher())
+
     private val user = User("user1")
     private val exception = HttpException(Response.error<ResponseBody>(404, "User not found".toResponseBody("plain/text".toMediaTypeOrNull())))
     private val repo = Repo("repo1", null, "", 0, 0)
 
-    private lateinit var api: Api
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private var api: Api = mockk(relaxed = true)
 
     private lateinit var mainRepository: DefaultMainRepository
     @Before
     fun setup() {
-        api = FakeApi(
-            user,
-            exception,
-            repo
-        )
-        Dispatchers.setMain(testDispatcher)
-        mainRepository = DefaultMainRepository(api, Dispatchers.Main)
-    }
+        coEvery { api.getUser("user1") } returns user
+        coEvery { api.getRepos("user1") } returns listOf(repo)
 
-    @After
-    fun reset() {
-        Dispatchers.resetMain()
+        coEvery { api.getUser("") } throws exception
+        coEvery { api.getRepos("") } returns emptyList()
+        mainRepository = DefaultMainRepository(api, Dispatchers.Main)
     }
     @Test
     fun getData_requestDataWithNameFromServer_successful() = runTest {

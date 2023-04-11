@@ -5,6 +5,5 @@
     <string name="search">search</string>
     
     <string name="last_updated">Last updated: %s</string>
-    <string name="star_">Star: %d</string>
-    <string name="fork_">Fork: %d</string>
+    <string name="star_fork_">Star: %d, Fork: %d</string>
 </resources>
