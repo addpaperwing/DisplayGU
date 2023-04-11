@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.displaygu.R
 import com.example.displaygu.data.Repo
 import com.example.displaygu.databinding.FragmentItemCardBinding
+import com.example.displaygu.toTorontoTime
 
 private const val KEY_ARGS_REPO = "com.example.displaygu.key_args_repo"
 class ItemCardDialogFragment : DialogFragment() {
@@ -47,7 +48,7 @@ class ItemCardDialogFragment : DialogFragment() {
         }
 
         binding.nameTextView.text = repo?.name
-        binding.lastUpdatedTextView.text = getString(R.string.last_updated, repo?.updateAt)
+        binding.lastUpdatedTextView.text = getString(R.string.last_updated, repo?.updateAt?.toTorontoTime())
         binding.starAndForkTextView.text = getString(R.string.star_fork_, (repo?.stargazersCount?:0), (repo?.forks?:0))
         binding.descTextView.text = repo?.description
     }
