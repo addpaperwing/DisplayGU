@@ -8,7 +8,11 @@ import com.example.displaygu.data.Repo
 import com.example.displaygu.data.User
 import com.example.displaygu.network.TaskState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
@@ -28,13 +32,13 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
         viewModelScope.launch {
             repository.getData(userName)
                 .onStart {
-                    _taskState.postValue(TaskState.LOADING)
+                    _taskState.value = TaskState.LOADING
                 }.catch { cause ->
                     Log.e(TAG, "Error", cause)
-                    _taskState.postValue(TaskState.error(cause))
+                    _taskState.value = TaskState.error(cause)
                 }.collect {
                     _result.value = it
-                    _taskState.postValue(TaskState.SUCCEED)
+                    _taskState.value = TaskState.SUCCEED
                 }
         }
     }

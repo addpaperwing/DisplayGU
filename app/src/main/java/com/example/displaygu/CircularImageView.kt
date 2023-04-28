@@ -99,9 +99,9 @@ class CircularImageView @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val widthWithPadding = measure(widthMeasureSpec) - (paddingLeft + paddingRight)
-        val heightWithPadding = measure(heightMeasureSpec) - (paddingTop + paddingBottom)
-        diameter = min(widthWithPadding, heightWithPadding)
+        val widthWithoutPadding = measure(widthMeasureSpec) - (paddingLeft + paddingRight)
+        val heightWithoutPadding = measure(heightMeasureSpec) - (paddingTop + paddingBottom)
+        diameter = min(widthWithoutPadding, heightWithoutPadding)
         setMeasuredDimension(diameter, diameter)
     }
 
