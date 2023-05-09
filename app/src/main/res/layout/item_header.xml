@@ -1,27 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:id="@+id/sortBy"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
-    
-    <com.example.displaygu.CircularImageView
-        android:id="@+id/avatarImageView"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="16dp"
-        tools:src="@color/black"
-        />
-    
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="14dp"
-        tools:text="The Octocat"
-        />
-
-</LinearLayout>
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/shape_rect_round_all_corners_3_color_primary"
+    android:paddingStart="12dp"
+    android:paddingTop="3dp"
+    android:paddingEnd="12dp"
+    android:paddingBottom="3dp"
+    android:layout_gravity="end"
+    tools:text="@string/sort_by"
+    tools:visibility="visible" />
