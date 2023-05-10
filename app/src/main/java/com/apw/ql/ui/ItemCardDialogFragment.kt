@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.apw.ql.R
-import com.apw.ql.data.Repo
+import com.apw.ql.data.model.Repo
 import com.apw.ql.databinding.FragmentItemCardBinding
 import com.apw.ql.toTorontoTime
 

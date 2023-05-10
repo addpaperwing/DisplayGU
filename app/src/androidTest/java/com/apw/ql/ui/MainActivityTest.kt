@@ -13,10 +13,10 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.apw.ql.data.Repo
-import com.apw.ql.data.User
+import com.apw.ql.data.model.Repo
+import com.apw.ql.data.model.User
 import com.apw.ql.di.RepositoryModule
-import com.apw.ql.network.TaskState
+import com.apw.ql.exts.TaskState
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -29,7 +29,6 @@ import org.junit.runner.RunWith
 import com.apw.ql.R
 import com.apw.ql.ToastMatcher
 import com.apw.ql.atPosition
-import io.mockk.every
 import io.mockk.mockk
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody

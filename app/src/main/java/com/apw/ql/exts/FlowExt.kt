@@ -1,8 +1,8 @@
-package com.apw.ql.network
+package com.apw.ql.exts
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.apw.ql.data.remote.State
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.retryWhen
 import java.io.IOException
 
 inline fun <T> Flow<T>.retryAndCatch(
-    liveData: MutableLiveData<Async<T>>,
+    liveData: MutableLiveData<State<T>>,
     delay: Long = 2000,
     crossinline retryCondition: (cause: Throwable, attempt: Long) -> Boolean = {cause, attempt ->
         cause is IOException && attempt < 3
@@ -19,12 +19,12 @@ inline fun <T> Flow<T>.retryAndCatch(
     logTag: String = "Flow"
 ): Flow<T> {
     return onStart {
-        liveData.value = Async.Loading
+        liveData.value = State.Loading
     }.retryWhen { cause, attempt ->
         delay(delay)
         return@retryWhen retryCondition(cause, attempt)
     }.catch { cause ->
-        Log.e(logTag, "Flow caught error", cause)
-        liveData.value = Async.Error(cause)
+        Log.e(logTag, "Error: ", cause)
+        liveData.value = State.Error(cause)
     }
 }

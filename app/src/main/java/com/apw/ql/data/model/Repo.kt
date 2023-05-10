@@ -1,4 +1,4 @@
-package com.apw.ql.data
+package com.apw.ql.data.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

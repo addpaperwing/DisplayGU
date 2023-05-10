@@ -1,11 +1,11 @@
-package com.apw.ql.network
+package com.apw.ql.data.remote
 
 import retrofit2.HttpException
 
-sealed class Async<out T> {
-    object Loading : Async<Nothing>()
+sealed class State<out T> {
+    object Loading : State<Nothing>()
 
-    data class Error(val exception: Throwable) : Async<Nothing>() {
+    data class Error(val exception: Throwable) : State<Nothing>() {
 
         fun getErrorMessage(): String? {
             return if (exception is HttpException) {
@@ -16,5 +16,5 @@ sealed class Async<out T> {
         }
     }
 
-    data class Success<out T>(val data: T) : Async<T>()
+    data class Success<out T>(val data: T) : State<T>()
 }

@@ -1,9 +1,8 @@
 package com.apw.ql.ui
 
 import com.apw.ql.MainDispatcherRule
-import com.apw.ql.data.Repo
-import com.apw.ql.data.User
-import com.apw.ql.network.Api
+import com.apw.ql.data.model.User
+import com.apw.ql.data.remote.Api
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

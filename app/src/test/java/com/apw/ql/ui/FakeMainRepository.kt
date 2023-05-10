@@ -1,7 +1,7 @@
 package com.apw.ql.ui
 
-import com.apw.ql.data.Repo
-import com.apw.ql.data.User
+import com.apw.ql.data.model.Repo
+import com.apw.ql.data.model.User
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

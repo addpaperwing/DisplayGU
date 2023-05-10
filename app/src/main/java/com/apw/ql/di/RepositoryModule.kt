@@ -1,6 +1,6 @@
 package com.apw.ql.di
 
-import com.apw.ql.network.Api
+import com.apw.ql.data.remote.Api
 import com.apw.ql.ui.DefaultMainRepository
 import com.apw.ql.ui.MainRepository
 import dagger.Module
