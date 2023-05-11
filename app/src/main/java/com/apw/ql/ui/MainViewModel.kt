@@ -11,20 +11,3 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "MainViewModel"
-@HiltViewModel
-class MainViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
-
-    private val _result = MutableLiveData<State<List<Repo>>>()
-
-    val result get() = _result
-
-    private var page = 0
-    fun getData(query: String, sort: String?, refresh: Boolean) {
-        if (refresh) page = 0
-        viewModelScope.launch {
-            repository.getData(query, page++ ,sort).retryAndCatch(_result).collect {
-                _result.value = State.Success(it)
-            }
-        }
-    }
-}

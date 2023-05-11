@@ -11,8 +11,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ListResponse<T>(
-    @field:Json(name = "total_count") val totalCount: Int,
-    @field:Json(name = "incomplete_results") val incompleteResults: Boolean,
+//    @field:Json(name = "total_count") val totalCount: Int,
+//    @field:Json(name = "incomplete_results") val incompleteResults: Boolean,
     val items: List<T>
 ) {
 }

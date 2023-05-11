@@ -1,8 +1,11 @@
 package com.apw.ql.ui
 
 import com.apw.ql.MainDispatcherRule
+import com.apw.ql.data.model.ListResponse
+import com.apw.ql.data.model.Repo
 import com.apw.ql.data.model.User
 import com.apw.ql.data.remote.Api
+import com.apw.ql.ui.main.DefaultMainRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -26,38 +29,40 @@ internal class DefaultMainRepositoryTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(UnconfinedTestDispatcher())
 
-    private val user = User("user1")
-    private val exception = HttpException(Response.error<ResponseBody>(404, "User not found".toResponseBody("plain/text".toMediaTypeOrNull())))
-//    private val repo = Repo("repo1", null, "", 0, 0)
+    private val exception = HttpException(Response.error<ResponseBody>(404, "No repo found".toResponseBody("plain/text".toMediaTypeOrNull())))
+    private val repo = Repo(
+        name = "repo1",
+        owner = User("user1"),
+        htmlUrl = "",
+        topics = emptyList(),
+        stargazersCount = 0,
+        updateAt = "")
 
     private var api: Api = mockk(relaxed = true)
 
     private lateinit var mainRepository: DefaultMainRepository
     @Before
     fun setup() {
-        coEvery { api.getUser("user1") } returns user
-//        coEvery { api.getRepos("user1") } returns listOf(repo)
-
-        coEvery { api.getUser("") } throws exception
-        coEvery { api.getRepos("") } returns emptyList()
+        coEvery { api.searchRepositories("repo1") } returns ListResponse(listOf(repo))
+        coEvery { api.searchRepositories("") } throws exception
+//        coEvery { api.searchRepositories("") } returns ListResponse(emptyList())
         mainRepository = DefaultMainRepository(api, Dispatchers.Main)
     }
     @Test
-    fun getData_requestDataWithNameFromServer_successful() = runTest {
-        val result = mainRepository.getData("user1").single()
+    fun getData_requestDataFromServer_successful() = runTest {
+        val result = mainRepository.getData("repo1", null).single()
 
-//        assertThat(result.first, `is`(user))
-//        assertThat(result.second.size, `is`(1))
-//        assertThat(result.second[0], `is`(repo))
+        assertThat(result.first(), `is`(repo))
+        assertThat(result.size, `is`(1))
     }
 
     @Test
     fun getData_requestDataWithNameFromServer_failed() = runTest {
         try {
-            mainRepository.getData("").single()
+            mainRepository.getData("", null).single()
         } catch (e: HttpException) {
             assertThat(e.code(), `is`(404))
-            assertThat(e.response()?.errorBody()?.string(), `is`("User not found"))
+            assertThat(e.response()?.errorBody()?.string(), `is`("No repo found"))
         }
     }
 }

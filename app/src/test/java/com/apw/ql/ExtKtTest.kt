@@ -9,9 +9,10 @@ class ExtKtTest {
     @Test
     fun toTorontoTime_isCorrect() {
         val githubTimeString = "2023-04-11T00:00:00Z"
-//        Apr 10, 2023, 8:00:00 PM
-        val correctResult = "2023-04-10 20:00"
+//        Apr 10, 2023, 8:00:00 PM GMT-4
 
-        assertThat(correctResult, `is`(githubTimeString.toTorontoTime()))
+        val correctResult = "Apr. 10, 2023"
+
+        assertThat(correctResult, `is`(githubTimeString.toDefaultTime()))
     }
 }

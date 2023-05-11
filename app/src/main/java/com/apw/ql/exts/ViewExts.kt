@@ -1,4 +1,4 @@
-package com.apw.ql
+package com.apw.ql.exts
 
 import androidx.recyclerview.widget.RecyclerView
 

@@ -1,4 +1,4 @@
-package com.apw.ql.ui
+package com.apw.ql.ui.main
 
 import android.os.Bundle
 import android.view.Gravity

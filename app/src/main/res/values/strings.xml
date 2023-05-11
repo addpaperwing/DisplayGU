@@ -4,10 +4,7 @@
     
     <string name="search">search</string>
     
-    <string name="last_updated">Last updated: %s</string>
-    <string name="star_fork_">Star: %d, Fork: %d</string>
-    
-    <string name="search_hint">Search repositories in github…</string>
+    <string name="search_hint">Search repositories…</string>
     
     <string name="sort_by">Sort by: %s</string>
     <string name="best_match">Best match</string>
@@ -16,4 +13,11 @@
     
     <string name="try_to_search_some_github_repositories">Try to search some github repositories</string>
     <string name="retry">Retry</string>
+    
+    <plurals name="star">
+        <item quantity="one">%d star</item>
+        <item quantity="other">%d stars</item>
+    </plurals>
+    <string name="update_on">Updated on %s</string>
+    <string name="open_with_browser">Open with browser</string>
 </resources>

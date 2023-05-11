@@ -1,6 +1,7 @@
 package com.apw.ql.data.model
 
 import android.os.Parcelable
+import com.apw.ql.toDefaultTime
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
@@ -20,7 +21,7 @@ import kotlinx.parcelize.Parcelize
 //        "avatar_url":"https://avatars.githubusercontent.com/u/16683610?v=4"
 //    },
 //    "html_url":"https://github.com/tiagohm/MarkdownView",
-//    "description":"Android Markdown编辑器",
+//    "description":"Android Markdown",
 //    "topics":[
 //        "android",
 //        "android-markdown",
@@ -39,7 +40,8 @@ data class Repo(
     @field:Json(name = "html_url") val htmlUrl: String,
     val description: String? = null,
     val topics: List<String>,
-    val language: String?,
+    val language: String? = null,
     @field:Json(name = "stargazers_count") val stargazersCount: Int,
     @field:Json(name = "updated_at") val updateAt: String,
-): Parcelable
+): Parcelable {
+}

@@ -16,7 +16,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.apw.ql.data.model.Repo
 import com.apw.ql.data.model.User
 import com.apw.ql.di.RepositoryModule
-import com.apw.ql.exts.TaskState
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -29,6 +28,10 @@ import org.junit.runner.RunWith
 import com.apw.ql.R
 import com.apw.ql.ToastMatcher
 import com.apw.ql.atPosition
+import com.apw.ql.data.remote.State
+import com.apw.ql.ui.main.MainActivity
+import com.apw.ql.ui.main.MainViewModel
+import io.mockk.every
 import io.mockk.mockk
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
@@ -52,13 +55,11 @@ class MainActivityTest {
 
     private lateinit var scenario: ActivityScenario<MainActivity>
 
-    private val result = MutableLiveData<Pair<User, List<Repo>>>()
-    private val taskState = MutableLiveData<TaskState>()
+    private val result = MutableLiveData<State<List<Repo>>>()
 
     @Before
     fun setup() {
-//        every { viewModel.result } returns result
-//        every { viewModel.taskState } returns taskState
+        every { viewModel.result } returns result
         scenario = launchActivity()
     }
 
@@ -69,42 +70,40 @@ class MainActivityTest {
 
     @Test
     fun successState_recyclerViewSetupDataCorrectly() {
-        val stargazersCount = 0
-        val forks = 0
+        val repo = Repo(
+            name = "repo1",
+            owner = User("user1"),
+            htmlUrl = "",
+            topics = emptyList(),
+            stargazersCount = 0,
+            updateAt = ""
+        )
 
-        val user = User("user1")
-//        val repo = Repo("repo1", null, "", stargazersCount, forks)
-
-
-
-//        result.postValue(Pair(user, listOf(repo)))
-        taskState.postValue(TaskState.SUCCEED)
+        result.postValue(State.Success(listOf(repo)))
 
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
-//        onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())))
 
-        onView(withId(R.id.recyclerView)).check(matches(hasDescendant(withText("user1")).atPosition(0)))
-        onView(withId(R.id.recyclerView)).check(matches(hasDescendant(withText("repo1")).atPosition(1)))
+        onView(withId(R.id.recyclerView)).check(matches(hasDescendant(withText("repo1")).atPosition(0)))
 
-        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition<ViewHolder>(1, click()))
-        val starAndForkText = getApplicationContext<Context>().resources.getString(R.string.star_fork_, stargazersCount, forks)
-        onView(withText(starAndForkText)).inRoot(isDialog()).check(matches(isDisplayed()))
+//        onView(withId(R.id.recyclerView)).perform(RecyclerViewActions.actionOnItemAtPosition<ViewHolder>(1, click()))
     }
 
     @Test
     fun loadingState_recyclerViewNotDisplayProgressBarDisplay() {
-        taskState.postValue(TaskState.LOADING)
+        result.postValue(State.Loading)
         onView(withId(R.id.recyclerView)).check(matches(not(isDisplayed())))
-//        onView(withId(R.id.progressBar)).check(matches(isDisplayed()))
+        onView(withId(R.id.progressBar)).check(matches(isDisplayed()))
     }
     @Test
     fun failedState_showToastRecyclerViewAndProgressBarNotDisplay() {
         val exception = HttpException(Response.error<ResponseBody>(404, "User not found".toResponseBody("plain/text".toMediaTypeOrNull())))
 
-        taskState.postValue(TaskState.error(exception))
+        result.postValue(State.Error(exception))
 
-        onView(withText("User not found")).inRoot(ToastMatcher()).check(matches(isDisplayed()))
         onView(withId(R.id.recyclerView)).check(matches(not(isDisplayed())))
-//        onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.retryButton)).check(matches(isDisplayed()))
+        onView(withId(R.id.errorTextView)).check(matches(isDisplayed()))
+        onView(withId(R.id.errorTextView)).check(matches(withText("User not found")))
     }
 }
