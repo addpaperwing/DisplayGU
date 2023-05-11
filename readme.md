@@ -1,5 +1,5 @@
 ## Repo Quick Look
-A toy app built with Kotlin and MVVM architecture, using GitHub [Search Repositories API](https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-repositories). Still working on it and trying to add more features.
+A small app built with Kotlin and MVVM architecture, using GitHub [Search Repositories API](https://docs.github.com/en/rest/search?apiVersion=2022-11-28#search-repositories). Still working on it and trying to add more features.
 #### Tech Stack, Libraries
 1. Kotlin base
 2. Coroutine + Flow + LiveData 
