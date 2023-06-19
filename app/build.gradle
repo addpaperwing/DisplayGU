@@ -29,16 +29,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '18'
     }
     buildFeatures {
         viewBinding true
+        compose true
     }
-
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.4.7"
+    }
     testOptions {
         unitTests {
             includeAndroidResources = true
@@ -56,11 +59,29 @@ kapt {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.fragment:fragment-ktx:1.5.7'
 
-    def coroutine_version = '1.6.4'
+    implementation platform('androidx.compose:compose-bom:2023.04.01')
+    implementation "androidx.compose.runtime:runtime"
+
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-tooling"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+
+    implementation "androidx.compose.foundation:foundation"
+    implementation "androidx.compose.foundation:foundation-layout"
+
+    implementation "androidx.compose.material3:material3"
+
+    implementation "androidx.compose.runtime:runtime-livedata"
+
+
+    implementation 'androidx.activity:activity-compose:1.7.2'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
+
+    def coroutine_version = '1.7.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
     implementation 'com.google.android.material:material:1.9.0'
